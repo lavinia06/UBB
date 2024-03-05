@@ -1,0 +1,31 @@
+%a. Write a predicate to test ifna list is a set.
+%b. Write a predicate to remove the first three occurrencesof an element in a list.
+%If the element occurs less than three times, all occurrenceswill be removed.
+  nrOcc([], _, 0).
+  nrOcc([H|T], E, P):-
+        H=:=E,
+        nrOcc(T, E, P1),
+        P is P1+1.
+    nrOcc([H|T], E, P):-
+        H=\=E,
+        nrOcc(T, E, P).
+
+test([]).
+test([H|T]):-
+    nrOcc(T, H, P),
+    P=:=0,
+    test(T).
+
+%b
+
+    
+
+removeElem([],_,_,[]).
+ 
+removeElem([H|T],E,C,R):-
+    E=:=H,
+    C>0,
+    C1 is C - 1,
+    removeElem(T,E,C1,R).
+removeElem([H|T],E,C,[H|R]):-
+	removeElem(T,E,C,R). 

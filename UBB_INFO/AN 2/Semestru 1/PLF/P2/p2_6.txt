@@ -1,0 +1,38 @@
+%[1, [2, 3], [4, 1, 4], 3, 6, [7, 10, 1, 3, 9], 5, [1, 1, 1], 7] =>
+%[1, [2], [1, 3], 3, 6, [2], 5, [1, 2, 3], 7]
+
+
+
+maxab(A,B,A):-
+    A >= B.
+maxab(A,B,B):-
+    B>A.
+
+%vdm aici
+maxlist([A],A).
+maxlist([],0).
+maxlist([H|T],R):-
+    maxlist(T,RR),
+    maxab(H,RR,R).
+
+
+    
+f([],[]).   
+f([H|T],[RR|R]):-
+    is_list(H),
+    maxlist(H,E),  
+    pos(H,1,E,RR),
+    f(T,R).
+f([H|T],[H|R]):-
+    f(T,R).
+
+
+pos([],_,_,[]).   
+pos([H|T],I,E,[I|R]):-
+    H =:= E,
+    I1 is I+1,
+    pos(T,I1,E,R).
+pos([H|T],I,E,R):-
+    H =\= E,
+    I1 is I+1,
+    pos(T,I1,E,R).

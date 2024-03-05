@@ -1,0 +1,20 @@
+%The lista1...an is given. Write a predicate to determine all sublists strictlyascending of this lista.
+
+subset([], []).
+subset([H|T], [H|R]):-
+    subset(T, R).
+subset([_|T], R):-
+    subset(T, R).
+
+asc([_]).
+asc([H1, H2|T]):-
+    H1<H2,
+    asc([H2|T]).
+
+f([], []).
+f(L, R):-
+    subset(L, R),
+    asc(R).
+
+ff(L, R):-
+    findall(RS, f(L, RS), R).

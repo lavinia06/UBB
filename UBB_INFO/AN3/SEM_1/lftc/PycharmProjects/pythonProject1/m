@@ -1,0 +1,89 @@
+import socket
+import os
+from _thread import *
+
+
+ServerSideSocket = socket.socket()
+host = '0.0.0.0'
+port = 2002
+ThreadCount = 0
+try:
+    ServerSideSocket.bind((host, port))
+except socket.error as e:
+    print(str(e))
+print('Socket is listening..')
+ServerSideSocket.listen(5)
+
+grid = [[0 for _ in range(6)] for _ in range(6)]
+
+walls = [(1, 1), (2, 3), (4, 4), (1, 5), (3, 2), (4, 5), (2, 4)]
+
+for (x, y) in walls:
+    grid[x][y] = 1
+
+location = [0, 0]
+last_location = [0, 0]
+
+Clients = []
+
+def msg():
+    for client in Clients:
+        client.sendall(str.encode(str(f"Current location: {location[0]}, {location[1]}")))
+
+def multi_threaded_client(connection, address):
+    global grid
+    global location
+    global last_location
+    grid[0][0] = 2
+    connection.send(str.encode('Game started! You are in 0, 0; you have to get to 5,5'))
+    while True:
+        print(location[0], location[1])
+        data = connection.recv(2048)
+        response = data.decode('utf-8')
+        if not data:
+            break
+
+        last_location = location
+        if response == "up":
+            location = [location[0] - 1, location[1]]
+        if response == "down":
+            location = [location[0] + 1, location[1]]
+        if response == "left":
+            location = [location[0], location[1] - 1]
+        if response == "right":
+            location = [location[0], location[1] + 1]
+
+        row = location[0]
+        col = location[1]
+
+        if not (0 <= row < 6 and 0 <= col < 6):
+            connection.sendall(str.encode(str("Out of matrix! Invalid!")))
+            location = last_location
+
+        else:
+            if grid[row][col] == 1:
+                connection.sendall(str.encode(str("It's a wall, can't go there")))
+                location = last_location
+            else:
+                if row == 5 and col == 5:
+                    connection.sendall(str.encode(str(f"You won!")))
+                    exit()
+                else:
+                    connection.sendall(str.encode(str(f"You are at {row}, {col}")))
+
+        print(f"From {address[0]}:{address[1]} => {data.decode('utf-8')}")
+        grid[location[0]][location[1]] = 2
+        for row in grid:
+            print(row)
+        msg()
+
+    connection.close()
+
+
+while True:
+    Client, address = ServerSideSocket.accept()
+    print('Connected to: ' + address[0] + ':' + str(address[1]))
+    start_new_thread(multi_threaded_client, (Client, address))
+    ThreadCount += 1
+    print('Thread Number: ' + str(ThreadCount))
+    Clients.append(Client)

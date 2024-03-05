@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid black;
+}
+
+img {
+    opacity: 1;
+    transition: opacity 0.5s ;
+}
+
+img:hover {
+    opacity: 0.8;
+}

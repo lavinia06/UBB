@@ -1,0 +1,24 @@
+%a. Write a predicate to substitutean element from a list with another element in the list.
+%b. Write a predicate to create the sublist (lm, ..., ln) from the list (l1,..., lk).
+
+substitute([], _, _, []).
+substitute([H|T], E, U, [U|R]):-
+    H=:=E,!,
+    substitute(T, E, U, R).
+substitute([H|T], E, U, [H|R]):-
+    H=\=E,!,
+    substitute(T, E, U, R).
+
+%B
+
+sublist([], _, _, _, []).
+sublist([H|T], M, N, I,  [H|R]):-
+    I=<N,
+    I>=M,
+    I1 is I+1,
+    sublist(T, M, N, I1, R).
+sublist([_|T], M, N, I, R):-
+    I1 is I+1,
+    sublist(T, M, N, I1, R).
+
+    

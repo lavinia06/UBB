@@ -1,0 +1,41 @@
+(defun f(l n)
+    (cond
+        ((and (numberp l) (= (mod n 2) 1)) (list l))
+        ((atom l) nil)
+        (t (apply #'append (mapcar #'(lambda (a)(f a (+ 1 n))) l)))
+        
+    )
+)
+
+(defun mymin(a b)
+(cond
+((and (not (numberp a)) (not (numberp b)))nil)
+((not (numberp a)) b)
+((not (numberp b)) a)
+((> a b) b)
+(t a)
+)
+)
+
+(defun minlist(l)
+(cond
+((null l) -1)
+((null (cdr l)) (car l))
+(t(mymin (car l) (minlist (cdr l))))
+)
+)
+
+(defun prop(n)
+    (=(mod (minlist (f n 0)) 2) 0)
+)
+
+(defun main_f (l)
+    (cond
+        ((atom l) 0)
+        ((prop l)(print l) (+ 1 (apply #'+ (mapcar #'main_f l))))
+        (t (apply #'+(mapcar #'main_f l)))
+    )
+)
+
+
+(print  (main_f '( A (B 2) (2 C 4) (1 (3 F)) (((G) 4) 2)) ) ) 

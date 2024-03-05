@@ -1,0 +1,43 @@
+%a. Write a predicate to test equality of two sets without using the set difference.
+%b. Write a predicate to select the n-th element of a given list.
+
+%b
+det([], _, _, []).
+det([H|_], N, I, H):-
+    I=:=N,!.
+det([_|T], N, I, R):-
+    I=\=N,
+    I1 is I+1,
+    det(T, N, I1, R).
+
+%a
+
+
+contains([V|_], V):-!.
+contains([_|T], V):-
+    contains(T,V).
+
+len([], 0).
+len([_|T], L1):-
+    len(T, L),
+	L1 is L+1.
+
+remove([], _, []).
+remove([A], A, []).
+remove([H|T], E, R):-
+    H=:=E,
+    remove(T, E, R).
+remove([H|T], E, [H|R]):-
+    H=\=E,
+    remove(T, E, R).
+
+fct([], []).
+fct([H|T], [H1|T1]):-
+    len([H|T], P),
+    len([H1|T1], P1),
+    P=:=P1,
+    contains([H|T], H1),
+    contains([H1|T1], H),
+    remove(T, H1, RR),
+    remove(T1, H, RE),
+    fct(RR, RE).

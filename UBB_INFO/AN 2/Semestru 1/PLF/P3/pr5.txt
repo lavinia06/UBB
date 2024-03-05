@@ -1,0 +1,40 @@
+%Two integers,n and m are given. Write a predicate to determine all possible sequences of numbers from 1 to n, such that between any twonumbers fromconsecutive positions, the absolute differenceto be >= m.
+
+abs(A, A, 0).
+abs(A, B, R):-
+    A<B,
+    R is B-A.
+abs(A, B, R):-
+    A>B,
+    R is A-B.
+
+pos([H1, H2], M):-
+    abs(H1, H2, R),
+    R>=M.
+pos([H1,H2|T], M):-
+    abs(H1, H2, R),
+    R>=M,
+    pos([H2|T], M).
+
+seq(I, N, []):-
+    I =:= N+1.
+seq(I, N, [I|R]):-
+    I =< N, 
+    I1 is I+1,
+    seq(I1, N, R).
+seq(I, N, R):-
+    I =< N, 
+    I1 is I+1,
+    seq(I1, N, R).
+
+one(N, M, R):-
+    seq(1, N, R),
+    pos(R, M).
+    
+ all(N, M, R):-
+    findall(RS, one(N, M, RS), R).
+    
+    
+    
+    
+    

@@ -1,0 +1,9 @@
+b. Calculate the alternatesum oflist’s elements(l1 -l2 + l3 ...).
+
+alternativeSum([], _, 0).
+alternativeSum([H|T], C, R):-
+    C1 is C * -1,
+    alternativeSum(T, C1, RR),
+    H1 is H * C1,
+    R is H1+RR.
+    

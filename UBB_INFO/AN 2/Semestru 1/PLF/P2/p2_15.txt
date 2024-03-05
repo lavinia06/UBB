@@ -1,0 +1,57 @@
+
+%a. Define a predicate to determine the predecessor of a number represented as digits in a list. 
+%Eg.: [1 9 3 6 0 0] =>[1 9 3 5 9 9]
+%b. For a heterogeneous list, formed from integer numbers and list of numbers, define a predicate to determine the predecessor of the every sublist considered as numbers.Eg.: [1, [2, 3], 4, 5, [6, 7, 9], 10, 11, [1, 2, 0], 6] =>[1, [2, 2], 4, 5, [6, 7, 8], 10, 11, [1, 1, 9] 6]
+
+carry(A, B, C, 1):-
+	AB is A-B,
+    ABC is AB-C,
+    ABC < 0,
+    !.
+carry(A, B, C, 0):-
+	AB is A-B,
+    ABC is AB-C,
+    ABC >= 0,
+    !.
+
+digit(A, B, C, D):-
+    A - B - C < 0,
+    D is 10 - B - C + A.
+
+digit(A, B, C, D):-
+    A - B - C >= 0,
+    D is A-B-C.
+
+sub([], [], _, []).
+sub([H],[], C, R):-
+    digit(H, 0, C, RD),
+    RD =:= 0,
+    sub([], [], C, R).
+sub([H|T], [], C, [RD|R]):-
+    carry(H, 0, C, RC),
+    digit(H, 0, C, RD),
+    sub(T, [], RC, R).
+sub([H1|T1], [H2|T2], C, [RD|R]):-
+    carry(H1, H2, C, RC),
+    digit(H1, H2, C, RD),
+    sub(T1, T2, RC, R).
+
+invers(C, [], C).
+invers(C, [H|T], R):-
+    invers([H|C], T, R).
+
+predecesor(L, R):-
+    invers([], L, RR),
+    sub(RR, [1], 0, RE),
+    invers([], RE, R).
+
+%B
+f([], []).
+f([H|T], [RR|R]):-
+    is_list(H),
+    predecesor(H, RR),
+    f(T, R).
+f([H|T], [|R]):-
+    f(T, R).
+
+    

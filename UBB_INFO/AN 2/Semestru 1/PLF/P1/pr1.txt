@@ -1,0 +1,39 @@
+%a. Write a predicate to determine the lowest common multiple of a list formed from integer numbers.
+%b. Write a predicate to add a value v after 1-st, 2-nd, 4-th, 8-th, ... element in a list.
+
+cmmdc(A, 0, A).
+cmmdc(0, A, A).
+cmmdc(A, A, A).
+cmmdc(A, B, R):-
+    A > B,
+    A1 is A - B,
+    cmmdc(A1, B, R).
+cmmdc(A, B, R):-
+    A < B,
+    B1 is B - A,
+    cmmdc(A, B1, R).
+    
+
+cmmmc(A, B, R):-
+    cmmdc(A, B, RE),
+   	R is A * B / RE.
+
+func([], 0).
+func([A], A).
+func([H|T], R):-
+    func(T, RE),
+    cmmmc(H, RE, R).
+
+
+% B
+
+insertAtPos([], _, _, _,  []).
+insertAtPos([H|T], E, POS, I, [H, E|R]):-
+    POS=:=I,
+    I1 is I+1, 
+    POS1 is POS*2,
+    insertAtPos(T,E, POS1, I1, R).
+insertAtPos([H|T], E, POS, I, [H|R]):-
+    POS=\=I,
+    I1 is I+1, 
+    insertAtPos(T,E, POS, I1, R).

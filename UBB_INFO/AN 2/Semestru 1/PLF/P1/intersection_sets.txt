@@ -1,0 +1,19 @@
+contains([V|_], V):-!.
+contains([_|T], V):-
+    contains(T,V).
+
+
+remove([], _, []).
+remove([A], A, []).
+remove([H|T], E, R):-
+    H=:=E,
+    remove(T, E, R).
+remove([H|T], E, [H|R]):-
+    H=\=E,
+    remove(T, E, R).
+
+fct([], [], []).
+fct([H|T], [H1|_], [H|R]):-
+    contains([H|T], H1),
+    remove(T, H1, RR),
+    fct(RR, R).

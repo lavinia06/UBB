@@ -1,0 +1,211 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+  font-size: 1.1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  src: url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTQ7aC6SjiAOpAWOKfJDfVRY.woff2) format('woff2');
+}
+
+.container {
+  width: 1170px;
+}
+
+.banner {
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: url("https://www.tutorialspoint.com/images/search-bg.jpg") top center;
+  background-size: cover;
+  height: 450px;
+}
+
+.banner .container {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 150px;
+}
+
+.form-control {
+  margin-top: 1.5em;
+}
+
+input {
+  width: 100%;
+  height: 2.5em;
+  padding: 0 1em;
+  font-size: 1em;
+  border: .2em solid #343434;
+  border-right: none;
+}
+
+button {
+  width: 30%;
+  background-color: #024622;
+  color: white;
+  font-size: 1em;
+  border: .2em solid #343434;
+  border-left: none;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+header {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  flex: 1;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-links {
+  flex: 6;
+}
+
+.pill {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 1px solid #aaaaaa;
+  background: url("https://www.tutorialspoint.com/theme/img/social-sprites.png") 0 -121px;
+  display: block;
+}
+
+.wrapper {
+  margin-top: -150px;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper .container {
+  background-color: white;
+  padding: .5em;
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+}
+
+.big-tutorial {
+  grid-column: 1 / span 4;
+  width: 80%;
+}
+
+.big-tutorial > img {
+  width: 80%;
+}
+
+.tutorial-card {
+  width: 100%;
+  /*padding: .25em;*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: .25em solid black;
+}
+
+.tutorial-card > * {
+  width: 100%;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+}
+
+.tutorial-teacher {
+  padding: .5em 0;
+}
+
+.tutorial-card h3 {
+  padding-bottom: 2em;
+}
+
+.tutorial-teacher img {
+  border-radius: 20px;
+}
+
+.tutorial-card hr {
+  border-top: dotted 1px;
+  width: 95%
+}
+
+.tutorial-teacher span {
+  display: flex;
+  align-items: center;
+}
+
+.top-links-row ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  color: #aaaaaa;
+}
+
+.top-links-row {
+  display: flex;
+  width: 100%;
+}
+
+.header-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-weight: bold;
+  font-size: .8em;
+}
+
+.bottom-links-row ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.top-links-row li {
+  display: flex;
+  align-items: normal;
+  border-radius: 5px;
+  /*width: 20%;*/
+}
+
+.important {
+  padding: 0 .5em;
+  background-color: #fffb09;
+}
+
+.page-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.page-title h2 {
+  margin: 0 1em;
+}
+
+marquee img {
+  width: 50px;
+}

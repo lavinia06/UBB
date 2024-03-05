@@ -1,0 +1,48 @@
+a)
+
+replace([], _, _, []).
+replace([H|T], A, B, [B|R]):-
+    H=:=A, 
+    replace(T, A, B, R).
+replace([H|T], A, B, [H|R]):-
+    H=\=A, 
+    replace(T, A, B, R).
+
+b)
+replace([], _, _, []).
+replace([H|T], A, B, [B|R]):-
+    H=:=A,
+    replace(T, A, B, R).
+replace([H|T], A, B, [H|R]):-
+    H=\=A,
+    replace(T, A, B, R).
+
+
+max(A, B, A):-
+    A>B.
+max(A, B, B):-
+    A<B.
+
+findmax([H], H):-number(H).
+findmax([_], -999).
+findmax([H|T], R):-
+    number(H),
+    !,
+    findmax(T, RE),
+    max(H, RE, R).
+findmax([_|T], R):-
+    findmax(T, R).
+
+main([], _, []).
+main([H|T], M, [RR|R]):-
+    is_list(H),
+    !,
+    findmax(H, MA),
+    replace(H, MA, M, RR),
+    main(T, M, R).
+main([H|T], M, [H|R]):-
+     main(T, M, R).
+
+mainc(L, R):-
+    findmax(L, M),
+    main(L, M, R).

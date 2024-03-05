@@ -1,0 +1,2 @@
+cat fisier | sed -e -E "s/ / /g" e la fel cu 
+sed -e -E "s/ / /g" fisier

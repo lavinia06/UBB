@@ -1,0 +1,144 @@
+->sed:
+	sed 's/ reg1/ reg2/ g'
+    -command(substitute)    modifier
+ex:1. sed 's/[a-z]/0/g' f.txt ->inlocuieste toate literele cu 0
+f.txt -> abc 123 tef
+   2. remove the first word from each line:
+	sed 's/^[^ ]\+\s/ /' f.txt
+   3.remove the last word of the line:
+	sed 's#[^ ]\++$# #' f.txt ->putem folosi orice caracter pentru delimitare(/ #)
+
+->sed 'd/pattern/'->delete the lines matching the pattern, dar nu modifica fisierul
+->sed -i 'd/test/' f.txt-> delete in the file
+->sed -i 'd/^#/' f.txt
+
+->sed'y/reg1/reg2/' f....->translate
+      source dest ->the character at position i from reg1 is translated to the character from pos i in the reg2
+		  ->they need to have the same number of elements
+->sed 'y/ABC...Z/XYZ.....G' ->instead of A we will print X
+->sed 'y/abc/tdd' f.txt
+->sed: i-insert
+       x-exchange
+       p-print
+       a-append
+
+
+->awk '{ }' f....
+BEGIN{
+  .....
+}
+END{
+....}
+{
+....
+}
+COMMANDS:
+->first command to be run: print a;->we dont have to declare the variables
+				   ->once it is initialized we cant change its type
+->printf("%s\n", s); similar to print s;
+->index(source, rg)->all the arrays are starting with 1
+   ->Return the index where the substring is found in the source
+->match(source,rg)->return true or false if they are matching
+->length(" ")(or an array)
+->split(Source, v[, delim]);
+->$0->represents the content of the whole line;
+->$1.....$9 ->print the first 9 words(delimited by default by space)
+->print the therd word of each line: awk '{print $3}' f...
+->for changing the delimitor: awk -F: '{printf("test %s\n", $10);}' f.txt (what is after -F will be the delimitor, in this case :)
+->print the sum of all numbers from the therd position(if we have multiples lines): awk -F: '{sum+=$3}
+											END{
+												print "Sum=" sum;
+											   }' f.txt
+-> awk: NF->nr. of fields
+        FS->field separator
+        NR->nr. of rows
+
+-> /etc/passwd->special file, mentaining users, each line has a strict stucture: username:*:userid:groupid:full name:/home/scs/licence../an1/gr914/username/:/bin/bash
+							->command id
+							->command add usr, ch name, ch sh(change shall)
+
+->print the names that are starting with B:
+awk -F: '{if(index($5, "B")==1)
+		print $5
+	}' /etc/passwd
+->how manny lines are starting with P
+awk -F: '{if(index($5, "P")==1)
+		n++
+	}
+	END{ print "we found" n"lines"
+	}' /etc/passwd
+
+->build a statistics with top 10 most top names:
+(**this prints all the names with the frequency**)
+awk -F: 'BEGIN{ n=1}
+	{ split($5, a, " "); ->in a[1] will be the family name
+	 if(f[a[1]]==0){
+		names[n++]=a[1];}
+	f[a[1]]++;}
+	END{
+	    for(i=1; i<n; i++){
+		printf("%s:%d", names[i], f[names[i]]);}
+        }' /etc/passwd
+
+->build a statistics with top 10 most top names:
+in the END, before printing the array: sortByFreq();
+
+function sortByFreq(){
+   notchanged=1;
+	while(notchanged==1){
+		notchanged=0;
+		for(i=1; i<n; i++){	
+			if(f[names[i]]<f[names[i+1]]){
+				aux=f[names[i]];
+				f[names[i]]=f[names[i+1]];
+				f[names[i+1]]=aux;
+				aux2=names[i];
+				names[i]=names[i+1];
+				names[i+1]=aux2;
+				notchanged=1;
+			}
+		}
+	}
+
+
+-> 1:2:3:4:5 ->we want to exchange the second one with the one next to the end
+WITH AWK:
+awk -F: '{ printf("%s: ", $1);
+	   printf("%s: ", $(NF-1));
+	   for (i=3; i<NF-1; i++){
+	       printd("%s: ",$i);}
+	   printf("%s: %s\n" ,$2, $NF);
+	}'
+WITH SED:
+sed 's/^\([^:]\+\):\([^:]\+\):\(.*\):\([^:]\+\):\([^:]\+\)$/\1:\4:\3:\2:\5/'
+
+->all the names that are starting with T which logged with tty
+->command: last -n #
+		-n 100
+username tty start end
+->last |grep "^t "| awk '{print $2}' | sort| uniq(command removing the duplicates and adds how many lines were repeted)| sort -k2nr(second collumn numerical reverse)| head
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

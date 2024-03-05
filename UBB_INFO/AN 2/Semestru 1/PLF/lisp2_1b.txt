@@ -1,0 +1,15 @@
+(defun myAppend (l p)
+  (cond
+    ((null l) p)
+    (t (cons (car l) (myAppend (cdr l) p)))
+  )
+)
+
+(defun inorder(l)
+  (cond
+    ((null l) nil)
+    (t (myAppend (inorder (cadr l)) (myAppend (list (car l)) (inorder (caddr l)))))
+  )
+)
+
+(print (inorder '(A (B) (C (D) (E)))))

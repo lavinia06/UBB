@@ -1,0 +1,21 @@
+miu = input("give miu: ")
+sigma = input("give sigma: ")
+alpha = input("give alpha between (0,1): ")
+beta = input("give beta between (0,1): ")
+%a)
+%P(x<=0), P(x>=0)
+a = normcdf(0, miu, sigma)
+b = 1-a
+
+%b)
+%P(1-<=x<=1)
+c = normcdf(1, miu, sigma) - normcdf(-1, miu, sigma)
+%P(x<=-1 or x>=1)
+d = 1-c
+
+%c) P(X < xα) =α, forα∈(0,1)
+  %quantile means the inverse of cdf : norminv
+  e = norminv(alpha, miu, sigma)
+%d)
+% he valuexβsuch thatP(X > xβ) =β, forβ∈(0,1) (xβis the quantile oforder 1−β).
+  f = norminv(1-beta, miu, sigma)

@@ -1,0 +1,17 @@
+x=-1:0.1:1;
+y=x.^5/10;
+
+subplot(1,2,1);
+plot(x, y);
+xlabel("x");
+ylabel("y");
+title("y= plot");
+
+
+z=x.*sin(x);
+
+subplot(1,2,2);
+plot(x, z);
+xlabel("x");
+zlabel("z");
+title("z= plot ");

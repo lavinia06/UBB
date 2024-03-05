@@ -1,0 +1,237 @@
+1. P2
+
+
+
+merge(A, [], A):-!.
+merge([], A, A):-!.
+merge([], [], []):-!.
+
+merge([H1|T1], [H2|T2], [H1|R]):-
+    H1<H2,
+    !,
+    merge(T1, [H2|T2], R).
+merge([H1|T1], [H2|T2], [H2|R]):-
+    H1>H2,
+    !,
+    merge([H1|T1],T2, R).
+merge([H1|T1], [H2|T2], R):-
+    H1=:=H2,
+    !,
+    merge([H1|T1], T2, R).
+
+
+mergeSort([], []).
+mergeSort([A], [A]).
+mergeSort([H1, H2|T], R):-
+    split([H1, H2|T], L1, L2),
+    mergeSort(L1, S1),
+    mergeSort(L2, S2),
+    merge(S1, S2, R).
+    
+
+split([], [], []).
+split([A], [A], []).
+split([H1, H2|T], [H1|R1], [H2|R2]):-
+    split(T, R1, R2).
+
+
+main([], []).
+main([H|T], [RR|R]):-
+    is_list(H),
+    !,
+    mergeSort(H,RR),
+    main(T, R).
+
+main([H|T], [H|R]):-
+    not(is_list(H)),
+    main(T, R).
+
+
+5. P2
+
+append([], P, P).
+append([H|T], P, [H|R]):-
+    append(T, P, R).
+
+replace([], _, _, []).
+replace([H|T], E, P, R1):-
+    H=:=E,
+    replace(T, E, P, R),
+    append(P, R, R1).
+replace([H|T], E, P, [H|R]):-
+    H=\=E,
+    replace(T, E, P, R).
+
+main([], _, []).
+main([[H1|T1]|T], P, [RR|R]):-
+    replace([H1|T1], H1, P, RR),
+    main(T, P, R), !.
+main([H|T], P, [H|R]):-
+    main(T, P, R).
+
+7. 	P2
+
+max(A, B, A):- A>B, !.
+max(A, B, B):- B>A, !.
+
+
+findmax([A], A).
+findmax([_], -1).
+findmax([H|T], M):-
+    findmax(T, R),
+    max(H, R, M).
+findmax([_|T], R):-
+    findmax(T, R).
+
+main([], _, _, []).
+main([H|T], E, P, [P|R]):-
+    H=:=E, 
+    P1 is P+1, 
+    main(T, E, P1, R).
+main([H|T], E, P, R):-
+    H=\=E, 
+    P1 is P+1, 
+    main(T, E, P1, R).
+
+
+mainc([H|T], R):-
+    findmax([H|T], M),
+    main([H|T], M, 1, R).
+
+function([], []).
+function([H|T], [RR|R]):-
+    is_list(H),
+    !,
+    mainc(H, RR),
+    function(T, R).
+function([H|T], [H|R]):-
+    not(is_list(H)),
+    !,
+    function(T, R).
+
+
+
+=================== 10. P2
+
+
+is_prime(P, D):- D>P/2, !.
+is_prime(P, D):-
+    P mod D =\=0, 
+    !,
+    D1 is D+1,
+    is_prime(P, D1).
+is_prime(P):-
+    P>1,
+    is_prime(P, 2).
+
+main([], []).
+main([H|T], [H, H|R]):-
+    is_prime(H),
+    main(T, R).
+main([H|T], [H|R]):-
+    not(is_prime(H)),
+    main(T, R).  
+
+function([], []).
+function([H|T], [RR|R]):-
+    is_list(H),
+    !,
+    main(H, RR),
+    function(T, R).
+function([H|T], [H|R]):-
+    not(is_list(H)),
+    !,
+    function(T, R).
+
+
+
+========================= 12 p2
+
+divizor(N,_,L, L):- N =< 2. 
+divizor(N,N,L, L).
+
+divizor(A, D, L, [D|R]):-
+    A mod D=:=0,
+    D1 is D+1, 
+    divizor(A, D1, L, R).
+divizor(A, D, L, R):-
+    A mod D=\=0,
+    D1 is D+1, 
+    divizor(A, D1, L, R).
+divizor(A, L, R):-
+    divizor(A, 2, L, R).
+
+
+function([], []).
+function([H|T], [H|RR]):-
+   function(T, R),
+   divizor(H, R, RR).
+   
+
+
+13. 
+remove([], []).
+remove([H], [H]).
+remove([H1, H2], []):- H2=:=H1+1.
+remove([H1, H2, H3|T], R):-
+    H2=:=H1+1,
+    H3=:=H2+1,
+    !,
+    remove([H2, H3|T], R).
+remove([H1, H2, H3|T], R):-
+    H2=:=H1+1,
+    H3=\=H2+1,
+    !,
+    remove([H3|T], R).
+remove([H1, H2|T], [H1|R]):-
+    H2=\=H1+1,
+    remove([H2|T], R).
+
+
+14.
+
+
+even(H):- H mod 2 =:= 0.
+
+my_length([], 0).
+my_length([_|T], R):-
+    length(T, R1),
+    R is R1+1.
+
+consecutive([], C, AUX, C):-
+    my_length(C, RC),
+    my_length(AUX, AUXR),
+    RC>=AUXR.
+consecutive([], C, AUX, AUX):-
+    my_length(C, RC),
+    my_length(AUX, AUXR),
+    RC<AUXR.
+consecutive([H|T], C, AUX, [H|R]):-
+    even(H),
+    consecutive(T, C, AUX, R).
+consecutive([_|T], C, AUX, R):-
+    my_length(C, RC),
+    my_length(AUX, AUXR),
+    RC>=AUXR,
+    consecutive(T, C, [], R).
+consecutive([_|T], C, AUX, R):-
+    my_length(C, RC),
+    my_length(AUX, AUXR),
+    RC<AUXR,
+    consecutive(T, [], AUX, R).
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

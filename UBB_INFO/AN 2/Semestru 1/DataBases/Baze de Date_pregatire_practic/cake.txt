@@ -1,0 +1,88 @@
+drop table PurchaseCakes
+drop table Orders
+drop table Cake
+drop table Type
+drop table Chef
+
+create table Chef(
+	chef_id int primary key identity(1,1),
+	chef_name varchar(30),
+	chef_gender varchar(30),
+	chef_birthDate date
+)
+
+create table Type(
+	type_id int primary key identity(1,1),
+	type_name varchar(30),
+	type_description varchar(30)
+)
+
+create table Cake(
+	cake_id int primary key identity(1,1),
+	cake_name varchar(30),
+	cake_shape varchar(30),
+	cake_weight int, 
+	cake_price int,
+	type_id int foreign key references Type(type_id) on delete cascade on update cascade,
+	chef_id int foreign key references Chef(chef_id) on delete cascade on update cascade,
+	
+)
+
+create table Orders(
+	order_id int primary key identity(1,1),
+	order_date date
+)
+
+create table PurchaseCakes(
+	oder_id int foreign key references Orders(order_id),
+	cake_id int foreign key references Cake(cake_id),
+	nr_pieces int 
+)
+	
+insert into Chef(chef_name, chef_gender, chef_birthDate) values ('chef1', 'gender1', '2009-09-09'), ('chef2', 'gender2', '2007-12-09')
+insert into Type(type_name, type_description) values ('type1', 'descr1'), ('type2', 'descr2')
+insert into Cake(cake_name, cake_shape, cake_weight, cake_price, type_id, chef_id) values ('cake1', 'shape1', 12, 22, 1, 1), ('cake2', 'shape2', 99, 21, 1, 2), ('cake3', 'shape3', 9, 10, 2, 1)
+insert into Cake(cake_name, cake_shape, cake_weight, cake_price, type_id, chef_id) values ('cake2', 'shape2', 99, 21, 1, 1)
+insert into Orders(order_date) values ('2002-09-08'), ('2020-10-10')
+insert into PurchaseCakes(oder_id, cake_id, nr_pieces) values (1, 1, 98), (2, 1, 2), (2, 2, 10)
+
+select * from PurchaseCakes
+select * from Cake
+--b
+
+go
+create or alter procedure usp_add_cakes(@order_id int, @cake_name varchar(30), @p int)
+as
+	if @p < 0
+	raiserror('p must be positive', 12, 2)
+
+	declare @cake_id int = (select cake_id from Cake where cake_name = @cake_name)
+	if not exists ( select * from PurchaseCakes where cake_id = @cake_id and @order_id = oder_id)
+		insert into PurchaseCakes(oder_id, cake_id, nr_pieces) values (@order_id, @cake_id, @p)
+	else
+		update PurchaseCakes
+		set nr_pieces = @p
+		where cake_id = @cake_id and oder_id = @order_id
+go
+
+
+exec usp_add_cakes @order_id = 1, @cake_name ='cake1' , @p = 10001
+exec usp_add_cakes @order_id = 1, @cake_name ='cake3' , @p = 7
+select * from PurchaseCakes
+
+----c
+
+--implement a function that lists the name of the chefs who are specialised in the preparation of all the cakes
+
+go
+create or alter function display_chefs()
+returns Table as return
+select Chef.chef_name
+	from Chef 
+	where chef_id in (select chef_id from Cake group by chef_id having count (*) = ( select count(distinct cake_name) from Cake ))
+go
+
+select * from display_chefs()
+
+
+

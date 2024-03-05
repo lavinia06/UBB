@@ -1,0 +1,36 @@
+(defun maxi(a b)
+(cond
+((< a b) b)
+(t a)
+)
+)
+
+(defun depth(l c)
+(cond 
+((null l) c)
+((listp (car l)) (maxi(depth (car l) ( + c 1)) (depth (cdr l) c)))
+(t (depth (cdr l) c))
+)
+)
+
+(print (depth '(1 2 (2 3) 8 (99 9(7))) 0))
+
+
+;Write a function to sort a linear list without keeping the double values.
+
+(defun insert(l e)
+(cond
+((null l) (list e))
+((= e (car l)) l)
+((< e (car l)) (cons e l))
+(t (cons (car l) (insert (cdr l) e)))
+)
+)
+
+(defun sortare(l)
+(cond 
+((null l) nil)
+(t (insert(sortare (cdr l)) (car l)))
+)
+)
+(print (sortare '(5 4 6 5 4 5 6)))

@@ -1,0 +1,9 @@
+combine([E|_], 1, [E]).
+combine([H|T], K, [H|R]):-
+    K>1,
+    K1 is K-1,
+    combine(T, K1, R).
+combine([_|T], K, R):-
+    combine(T, K, R).
+
+findall(R, combine([1, 2, 3, 4], 2, R), X)

@@ -1,0 +1,20 @@
+RE:
+.- orice caracter;
+*- expresia de dinainte de steluta sa apara de anumite ori;
++-afiseaza odata sau deloc
+^-inceput de linie
+$-sfarsit de linie
+< >-inceput si sfarsit de cuvant
+()-grupeaza mai multe expresii
+[]-grupeaza caractere, seturi de caractere
+{}-pentru multificatori;
+ 	{n,m}-intre n si m
+	{n}-n ori
+	{ ,m}-maxim m
+	{m, }-minim m
+grep cu argumente: -i(ignore case sensitive)
+	           -v(afiseaza toate liniile care nu respecta pathu)
+		   -c(cate linii respecta path u)
+		   -o(arata doar partea din linie care respecta pathu)
+\-anuleaza efectul caracterelor speciala
+|-un fel de sau

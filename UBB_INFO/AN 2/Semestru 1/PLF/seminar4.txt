@@ -1,0 +1,30 @@
+#Given a list L, generate the list of all COMBINARI of K elements from the list that have product Pand sum S.Ex. L=[1,2,3,10], K=2, P=30, S=13 then resultR = [[3, 10].
+:- initialization(main).
+
+sub([], []).
+sub([H|T], [H|R]):-
+    sub(T, R).
+sub([_|T], R):-
+    sub(T, R).
+    
+f(L, R):-
+    findall(RS, sub(L, RS), R).
+
+valley([_], 0).
+valley([H1, H2|T], 1):-
+    H1>H2,
+    valley([H2|T], 1).
+valley([H1, H2|T], 1):-
+    H1=<H2,
+    valley([H2|T],0).
+valley([H1, H2|T], 0):-
+    H1<H2,
+    valley([H2|T],0).
+    
+    
+valleyMain([H1, H2|T]):-
+    H1>H2, 
+    valley([H1, H2|T], 1).
+    
+main :- 
+    valleyMain([5, 4, 3, 6, 7]).

@@ -1,0 +1,95 @@
+drop table Tranzaction
+drop table ATM
+drop table Cards
+drop table BankAcc
+drop table Customers
+
+create table Customers(
+	customer_id int primary key identity(1,1),
+	name varchar(30),
+	birth_date date,
+)
+
+
+create table BankAcc(
+	acc_id int primary key identity(1,1),
+	IBAN varchar(20),
+	balance int,
+	custormer_id int foreign key references Customers(customer_id) on delete cascade on update cascade
+)
+
+create table Cards(
+	card_id int primary key identity(1,1),
+	number int,
+	CVV int, 
+	acc_id int foreign key references BankAcc(acc_id) on delete cascade on update cascade
+)
+
+create table ATM(
+	atm_id int primary key identity(1,1),
+	address_atm varchar(30)
+)
+
+create table Tranzaction(
+	transaction_id int primary key identity(1,1),
+	atm_id int foreign key references ATM(atm_id) on delete cascade on update cascade,
+	card_id int foreign key references Cards(card_id) on delete cascade on update cascade,
+	summ int,
+	date_transaction date,
+	time_transaction time
+)
+
+insert into Customers(name, birth_date) values ('name1', '2022-09-12'), ('name2', '2021-07-23')
+insert into BankAcc(IBAN, balance, custormer_id) values(122234453, 234, 1), (213345, 333, 2)
+insert into Cards(number, CVV, acc_id) values (1234, 333, 1), (18883, 321, 1)
+insert into ATM(address_atm) values ('laleleor'),('carpatilor')
+insert into Tranzaction(atm_id, card_id, summ, date_transaction, time_transaction) values (1, 1, 23,'2022-09-12', '11:20:23'), (1, 2, 90,'2021-12-12', '01:20:03')
+insert into Tranzaction(atm_id, card_id, summ, date_transaction, time_transaction) values (2, 1, 23,'2022-09-12', '11:20:23')
+
+select *from Customers
+select * from BankAcc
+select * from Cards
+select * from ATM
+select * from Tranzaction
+
+
+-----b
+go
+create or alter procedure usp_delete_transactions(@card_number int)
+as
+
+	declare @cardId int = (select card_id from Cards where number = @card_number)
+	if @cardID is not null 
+		if exists (select * from Tranzaction where @cardId = card_id)
+			delete from Tranzaction where Tranzaction.card_id = @cardId
+		else
+			raiserror('the card does not have any transactions', 12, 1)
+	else
+		raiserror('the card does not exit', 12, 2)
+go
+
+exec usp_delete_transactions @card_number = 1234
+
+
+
+-----c
+
+create or alter view VIewCards
+as
+	select card_id
+	from Cards
+	where card_id in (select card_id from Tranzaction group by card_id having count(*) = (select count(*) from ATM))
+go
+
+select * from VIewCards
+
+------d
+go
+create function FunctionD(@S int)
+returns Table as return
+select * from Cards
+	where card_id in (select card_id from Tranzaction group by card_id having sum(summ)>@S)
+go
+
+select  * FROM FunctionD(80)
+

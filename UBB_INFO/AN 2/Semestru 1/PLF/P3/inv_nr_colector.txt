@@ -1,0 +1,10 @@
+%inverse of a number using colector
+
+inv(0, NC, NC).
+inv(N, NC, R):-
+    N>0,
+    D is N mod 10,
+    N1 is N div 10,
+    NCR is NC * 10,
+    NC1 is NCR + D,
+    inv(N1, NC1, R).

@@ -1,0 +1,18 @@
+sum([],0).
+sum([H|T],C1):-
+    sum(T,C),
+    C1 is C+H.
+
+subsets([],[]).
+subsets([_|T],R):-
+    subsets(T,R).
+subsets([H|T],[H|R]):-
+    subsets(T,R).
+
+oneSoll(L,S,SUB):-
+    subsets(L,SUB),
+    sum(SUB,SUM),
+    SUM =:= S.
+
+main(L,S,R):-
+    findall(RR,oneSoll(L,S,RR),R).

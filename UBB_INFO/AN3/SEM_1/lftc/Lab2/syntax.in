@@ -1,0 +1,34 @@
+Sintactical rules:
+
+
+program ::= stmt PROGRAM_OUT. // I would use stmtlist instead of stmt
+
+assignstmt ::= IDENTIFIER "==" expression
+
+expression ::= expression "+" term | term
+
+type1 ::= "BOOL" | "CHAR" | "INT" | "STRING"
+
+arraydecl ::= "VECTOR" "[" nr "]"  type1
+
+type  ::= type1|arraydecl
+
+stmtlist ::= stmt | stmt ";" stmtlist
+
+stmt ::= simplstmt | structstmt
+
+simplstmt ::= assignstmt | iostmt
+
+iostmt ::= "read" | "write" "(" IDENTIFIER ")"
+
+term ::= term "*" factor | factor
+
+ifstmt ::= "if" "(" condition ")" "[" stmt "." "]" "else" "[" stmt "." "]"
+
+whilestmt ::= "while" "(" condition ")" "[" stmt "." "]"
+
+condition ::= expression RELATION expression
+
+RELATION ::= "<" | "<=" | "==" | "!==" | ">=" | ">"
+
+//Everything else is good, following the code from lab 1

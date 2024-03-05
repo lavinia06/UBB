@@ -1,0 +1,88 @@
+drop table WomanBuyShoe
+drop table ShoesInPresentationShops
+drop table Shoe
+drop table ShoeModel
+drop table Woman
+drop table PresentationShop
+
+create table PresentationShop(
+	presentation_id int primary key identity(1,1),
+	presenation_name varchar(30),
+	presentation_city varchar(30)
+)
+
+create table Woman(
+	woman_id int primary key identity(1,1),
+	woman_name varchar(30),
+	max_spend int
+)
+
+create table ShoeModel(
+	model_id int primary key identity(1,1),
+	model_name varchar(30),
+	season varchar(30)
+)
+
+create table Shoe(
+	shoe_id int primary key identity(1,1),
+	price int,
+	model_id int foreign key references ShoeModel(model_id) on delete cascade on update cascade
+)
+
+create table ShoesInPresentationShops(
+	shoe_id int foreign key references Shoe(shoe_id) on delete cascade on update cascade,
+	presentation_id int foreign key references PresentationShop(presentation_id) on delete cascade on update cascade,
+	available_shoes int
+)
+
+create table WomanBuyShoe(
+	shoe_id int foreign key references Shoe(shoe_id) on delete cascade on update cascade,
+	woman_id int foreign key references Woman(woman_id) on delete cascade on update cascade,
+	nr_shoes int, 
+	amount int
+)
+
+insert into PresentationShop(presenation_name, presentation_city) values ('name1', 'city1'), ('name2', 'city2')
+insert into Woman(woman_name, max_spend) values ('lavi', 200000), ('laura', 9983723)
+insert into ShoeModel(model_name, season) values ('model1', 'iarna'), ('model2', 'vara')
+insert into Shoe(price, model_id) values (123, 1), (121, 2)
+insert into ShoesInPresentationShops(shoe_id, presentation_id, available_shoes) values (1, 1, 5), (1, 2, 44), (2, 1, 2), (2, 2, 8)
+insert into WomanBuyShoe(shoe_id, woman_id, nr_shoes, amount) values (1, 1, 23, 1222), (1, 2, 33, 8888)
+
+select * from PresentationShop
+select * from Woman
+select * from ShoeModel
+select * from Shoe
+select * from ShoesInPresentationShops
+select * from WomanBuyShoe
+-----b
+go
+create or alter procedure usp_add(@shoe_id int, @presentation_id int, @number int)
+as
+	if @shoe_id is not null and @presentation_id is not null 
+		insert into ShoesInPresentationShops(shoe_id, presentation_id, available_shoes) values (@shoe_id, @presentation_id, @number)
+	else 
+		raiserror('not valid input', 12, 1)
+go
+
+exec usp_add @shoe_id = 1, @presentation_id= 2, @number = 100
+
+------c
+go
+create view viewC
+as
+	select * from Woman W where woman_id in (select woman_id from WomanBuyShoe where amount > 2 and shoe_id = 1)
+go
+
+select * from viewC
+
+go
+create function fct(@nr_shops int)
+returns Table as return
+
+	
+	select * from Shoe where shoe_id in (select shoe_id from ShoesInPresentationShops group by shoe_id having count(*) > @nr_shops)
+go 
+
+select shoe_id, count(shoe_id) from ShoesInPresentationShops group by shoe_id
+select * from fct(2)

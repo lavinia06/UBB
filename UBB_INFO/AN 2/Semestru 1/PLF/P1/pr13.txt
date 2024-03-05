@@ -1,0 +1,24 @@
+%a. Transform a list in a set, in the order of the last occurrences of elements. 
+%Eg.: [1,2,3,1,2] is transformed in [3,1,2].
+%b. Define a predicate to determine the greatest common divisor of all numbers in a list.
+
+removeOcc([], _, []).
+removeOcc([H1|T1], E, R):-
+    H1=:=E,
+    removeOcc(T1, E, R).
+removeOcc([H1|T1], E, [H1|R]):-
+    H1=\=E,
+    removeOcc(T1, E, R).
+
+toset([],[]).
+toset([H|T], [H|R]):-
+    removeOcc(T, H, RR),
+    toset(RR, R).
+
+reverse(C, [], C).
+reverse(C, [H|T], R):-
+    reverse([H|C], T, R).
+
+f(L, R):-
+   toset(L, R1),
+    reverse(R1, R).

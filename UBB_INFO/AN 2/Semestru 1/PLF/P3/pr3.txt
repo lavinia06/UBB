@@ -1,0 +1,25 @@
+
+%Write a predicate to determine all decomposition of n(n given, positive), 
+%assum of consecutive natural numbers.
+desc(0, _, []).
+desc(S, N, [N|R]):-
+    S>=N,
+    SN is S-N,
+    NN is N+1,
+    desc(SN, NN, R).
+
+
+des(S, N, RR):-
+    N<S, 
+    desc(S, N, RR).
+
+des(S, N, R):-
+    N<S, 
+    N1 is N+1,
+    des(S, N1, R).
+
+f(L, R):-
+    findall(RS, des(L, 1, RS), R).
+
+
+ 

@@ -1,0 +1,14 @@
+%Write a predicate to generate the list of all subsets with all elements of a given list.
+% Eg: [2, 3, 4] N=2 => [[2,3],[2,4],[3,4]]
+sets([], 0, []).
+
+sets([H|T], K, [H|R]):-
+    K>0,
+    K1 is K-1,
+    sets(T, K1, R).
+sets([_|T], K, R):-
+    sets(T, K, R).
+
+f([], []).
+f(L, R):-
+    findall(RS, sets(L, 2, RS), R).

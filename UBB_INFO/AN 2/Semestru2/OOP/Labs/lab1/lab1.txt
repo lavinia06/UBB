@@ -1,0 +1,160 @@
+//
+// Created by ionel on 27/02/2023.
+//
+
+
+
+
+a. Read sequences of positive integer numbers (reading of each sequence ends by 0, reading of all the sequences ends by -1) and determine the maximum element of each sequence and the maxim element of the global sequence.
+b. Given a vector of numbers, find the longest contiguous subsequence such that all elements are in a given interval.
+
+
+
+#include <stdio.h>
+void a(){
+    /// Function to solve functionality 1
+    /// no parameters
+    /// prints the maximum element in each sequence, at the end prints the global maximum
+    ///-1 : - to stop the loop
+
+    int num, max_seq = 0, max_global = 0;
+
+    while (1) {
+
+        int max_num = 0;
+        printf("Enter a sequence of positive integer numbers (end with 0): ");
+
+        while (num!=-1) {
+            scanf("%d", &num);
+            if (num == 0) {
+                break;
+            }
+            if (num > max_num) {
+                max_num = num;
+            }
+        }
+        if (num != -1) printf("Maximum element of this sequence: %d\n", max_num);
+
+        if (max_num > max_seq) {
+            max_seq = max_num;
+        }
+        if (max_num > max_global) {
+            max_global = max_num;
+        }
+        if (num == -1) {
+            break;
+        }
+
+    }
+    printf("Maximum element of the global sequence: %d\n", max_global);
+}
+
+void display(){
+    /// Function to display the menu
+    printf("1. Read a vector of numbers from the console\n");
+    printf("2. Solve statement a\n");
+    printf("3. Solve statement b\n");
+    printf("4. Exit\n");
+}
+
+int read_vector(int vector[], int nr){
+    /// Function to read the vector for functionality 1
+    /// \param vector - the array in which we will store the vector we read
+    /// \param number_of_elements - the number of elements that we want to store in the array
+    /// returns the numbers of the array
+    printf("enter the number of elements you want to read: \n");
+    scanf("%d", &nr);
+    for(int i=0;i<nr;i++) {
+        printf("enter element %d of the vector: \n", i+1);
+        scanf("%d", &vector[i]);
+    }
+    return nr;
+}
+
+bool is_in_interval(int a, int b, int x){
+    /// Function to test wheter one element belongs to an interval
+    /// \param a - the beginning of the interval
+    /// \param b - the end of the interval
+    /// \param x - the number to be checked
+    ///returs true if x belongs to [a, b] and false otherwise
+    if(x<=b && x>=a)
+        return true;
+    return false;
+
+}
+int op_b(int a, int b, int v[], int n, int result[]){
+    /// Function to solve functionality 3
+    /// \param a - the beginning of the interval
+    /// \param b - the end of the interval
+    /// \param v - the vector in which we store the elements
+    /// \param n - the size of vector v
+    /// \param result - the final output with the longest subsequence
+    ///returs the length of the maximum sequence
+    int index, current_length=0, max_length = 0;
+    for(index=0;index<n;index++){
+        if(is_in_interval(a, b, v[index]))
+            current_length++;
+        else if(current_length>max_length) {
+            max_length = current_length;
+            int difference = index - current_length+1;
+            for (int j = 0; j < max_length; j++)
+                result[j] = v[j + difference-1];
+            current_length = 0;
+        }
+        else
+            current_length = 0;
+    }
+    if(current_length>max_length) {
+        max_length = current_length;
+        int difference = index - current_length;
+        for (int j = 0; j < max_length; j++)
+            result[j] = v[j + difference];
+    }
+
+    return max_length;
+}
+
+void option3(int v[], int n){
+    /// Function to complete functionality 3, in which the interval is read from the keyboard
+    /// \param v - the vector in which we store the elements
+    /// \param n - the size of vector v
+    /// prints out the result
+    int a, b;
+    printf("display the beginning of the interval: \n");
+    scanf("%d", &a);
+    printf("display the end of the interval: \n");
+    scanf("%d", &b);
+    int result[100], len;
+    len = op_b(a, b, v, n, result);
+    for(int index=0;index<len;index++)
+        printf("%d ", result[index]);
+    printf("\n");
+
+}
+
+int main() {
+    ///main function, no patameters and no return value
+    int v[100];
+    int n=0;
+    bool done = false;
+    while(!done){
+        printf("--choose an option from the menu:--\n\n");
+        int cmd=-1;
+        display();
+        scanf("%d", &cmd);
+        if(cmd == 4)
+            done = true;
+        else if(cmd == 2)
+            a();
+        else if(cmd == 1)
+            n= read_vector(v, n);
+        else if(cmd == 3){
+            //int ok= is_in_interval(2, 6, 9);
+            //printf("%d",ok);
+            option3(v, n);
+        }
+        else
+            printf("invalid input");
+    }
+    return 0;
+}

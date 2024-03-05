@@ -1,0 +1,13 @@
+N = S A B
+E = a b c d
+S = S
+P =
+    S -> A X
+    X -> B b
+    X -> epsilon
+    A -> C
+    A -> epsilon
+    B -> D
+    B -> epsilon
+    C -> c
+    D -> d

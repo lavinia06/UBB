@@ -1,0 +1,46 @@
+%a. Define a predicate to determine the longest sequences of consecutive even numbers
+% (if exist more maximal sequences one of them).
+% b. For a heterogeneous list, formed from integer numbers and list of numbers, 
+% define a predicate to replace every sublist with the longest sequences of even numbers from that sublist.
+% Eg.: [1, [2, 1, 4, 6, 7], 5, [1, 2, 3, 4], 2, [1, 4, 6, 8, 3], 2, [1, 5], 3] 
+% =>[1, [4, 6], 5, [2], 2, [4, 6, 8], 2, [], 3]
+
+even(A):- A mod 2 =:= 0.
+
+len([], 0).
+len([_|T], P):-
+    len(T, P1),
+    P is P1+1.
+
+append([], E, [E]).
+append([H|T], E, [H|R]):-
+    append(T, E, R).
+
+cons([], C, AUX, C):-
+    len(C, RC),
+    len(AUX, RA),
+    RC >= RA.
+cons([], C, AUX, AUX):-
+    len(C, RC),
+    len(AUX, RA),
+    RC < RA.
+
+cons([H|T],C,AUX,R):-
+    even(H),
+    append(AUX,H,RAUX),
+    cons(T,C,RAUX,R).
+
+cons([_|T], C, AUX, R):-
+    len(C, RC),
+    len(AUX, RA),
+    RC>= RA,
+    cons(T, C, [], R).
+
+cons([_|T], C, AUX, R):-
+    len(C, RC),
+    len(AUX, RA),
+    RC < RA,
+    cons(T, AUX, [], R).
+
+
+

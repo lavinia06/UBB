@@ -1,0 +1,46 @@
+a) Write a function to return the n-th element of a list, or NIL if such an element does not exist;
+
+(defun nthelem(l n pos)
+(cond
+((null l) nil)
+((= n pos) (car l))
+(t (nthelem (cdr l) n (+ pos 1)))
+)
+)
+
+(defun main(l n)
+    (nthelem l n 0)
+)
+
+(print (main '(0 1 2 3 4) 2))
+
+b) Write a function to check whether an atom E is a member of a list which is not necessarily linear.
+
+(defun check (l e)
+(cond
+((null l) nil)
+((and (atom(car l)) (equal (car l) e)) T)
+((listp (car l)) (or(check(car l) e) (check(cdr l) e)))
+(t (check (cdr l) e))
+)
+)
+
+(print (check '(1 (2 3) 4) 3))
+
+
+(defun removea(l e)
+(cond
+((null l) nil)
+((= (car l) e) (removea (cdr l) e))
+(t (cons (car l) (removea (cdr l) e)))
+)
+)
+
+(defun transformSet(l)
+(cond
+((null l) nil)
+(t (cons (car l) (transformSet (removea (cdr l) (car l)))))
+)
+)
+(print (removea '(1 2 3 4) 2))
+(print (transformSet '(1 2 4 5 5 6 2)))

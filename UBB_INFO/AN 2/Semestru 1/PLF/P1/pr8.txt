@@ -1,0 +1,28 @@
+%a. Write a predicate to determine if a list has even numbers of elements without counting the elements from the list.
+%b. Write a predicate to delete first occurrence of the minimum number from a list.
+
+verifyEven([]).
+verifyEven([_,_|T]):-verifyEven(T).
+
+%b
+
+min(A, A, A).
+min(A, B, A):- A<B.
+min(A, B, B):- B<A.
+
+remove([], _, []).
+remove([H|T], E, T):-
+    H=:=E,!.
+remove([H|T], E, [H|R]):-
+    H=\=E,!,
+    remove(T, E, R).
+
+fct([H], H).
+fct([H|T], RR):-
+    fct(T, R),
+    min(H, R, RR).
+
+f(L, R):-
+    fct(L, RR),
+    remove(L, RR, R).
+    

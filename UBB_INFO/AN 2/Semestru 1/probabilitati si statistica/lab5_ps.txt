@@ -1,0 +1,29 @@
+pr = [22.4, 24.5, 21.6, 22.4, 24.8, 21.7, 23.4, 23.3, 21.6, 20.0];
+rg = [17.7, 19.6, 12.1, 15.4, 14.0, 14.8, 19.6, 14.8, 12.6, 12.2];
+n1 = length(pr);
+n2 = length(rg);
+p_bar = mean(pr);
+r_bar = mean(rg);
+alpha = input("give the value of alpha ");
+%a)
+s1 = var(pr);
+s2 = var(rg);
+sp_sq = ((n1-1)*s1 + (n2-1)*s2)/(n1+n2-2);
+
+m1 = p_bar - r_bar - tinv(1-alpha/2, n1+n2-2)*sqrt(sp_sq)*sqrt(1/n1+1/n2)
+m2 = p_bar - r_bar + tinv(1-alpha/2, n1+n2-2)*sqrt(sp_sq)*sqrt(1/n1+1/n2)
+
+%b)
+c= (s1/n1)/(s1/n1+s2/n2);
+
+
+alt_n = (c*c)/(n1-1) + ((1-c)*(1-c))/(n2-1);
+n = 1/alt_n;
+
+m3 = p_bar - r_bar - tinv(1-alpha/2, n)*sqrt(s1/n1+s2/n2)
+m4 = p_bar - r_bar + tinv(1-alpha/2, n)*sqrt(s1/n1+s2/n2)
+
+%c)
+
+m5 = 1/finv(1-alpha/2, n1-1, n2-1)*(s1/s2)
+m6 = 1/finv(alpha/2, n1-1, n2-1)*(s1/s2)

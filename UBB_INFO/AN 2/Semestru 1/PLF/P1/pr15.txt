@@ -1,0 +1,40 @@
+fct([], [], []).
+fct([H1|T1], [H1|T] , L):-
+    H1 mod 2 =:= 0,
+    fct(T1, T, L).
+fct([H2|T2], L2, [H2|T3]):-
+    H2 mod 2 =:= 1,
+    fct(T2, L2, T3).
+
+union([], [], []).
+union(L, [], L).
+union([], L, L).
+union(L, [H2|T2], [H2|L1]):-
+    union(L, T2, L1).
+
+nr_pare([], 0).
+nr_pare([H|T], P):-
+	H mod 2 =:= 0,
+ 	nr_pare(T, P1),
+    P is P1+1.
+nr_pare([H|T], P):-
+	H mod 2 =\= 0,
+ 	nr_pare(T, P).
+
+
+nr_impare([], 0).
+nr_impare([H|T], P):-
+	H mod 2 =:= 1,
+ 	nr_impare(T, P1),
+    P is P1+1.
+nr_impare([H|T], P):-
+	H mod 2 =\= 1,
+ 	nr_impare(T, P).
+
+    
+    
+f(L, R, P1, P2) :-
+  fct(L, R1, R2),
+  union(R2, R1, R),
+  nr_pare(R1, P1),
+  nr_impare(R2, P2).

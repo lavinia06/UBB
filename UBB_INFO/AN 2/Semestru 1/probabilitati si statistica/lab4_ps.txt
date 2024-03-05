@@ -1,0 +1,64 @@
+======================1=============
+p = input('please type p between 0 and 1!')
+N = input('please type N!')
+u = rand(1,N)
+X=(u<p)
+u_x=unique(X)
+n_x=hist(X, length(u_x))
+rel_frq=n_x/N
+
+
+=======2b=========
+N = input("Please input N: ");
+p = input("Please input p: ");
+n = input("Please type the number of trials: ");
+%pt fiecare obiect, se incearca de n ori
+for i=1:N
+  u = rand(n, 1)
+  X(i) = sum(u<p)
+endfor
+
+k=0:n
+u_x = unique(X)
+n_x = hist(X, length(u_x))
+ref = n_x/N
+plot(u_x, n_x/N, k, binopdf(k, n, p), "r*")
+
+
+=======2c===========
+N = input("Please input N: ");
+p = input("Please input p: ");
+for i=1:N
+  X(i) = 0;
+  while rand >= p
+    X(i) = X(i)+1;
+  end
+endfor
+
+k=0:15;
+u_x = unique(X);
+n_x = hist(X, length(u_x));
+ref = n_x/N;
+plot(u_x, n_x/N, k, geopdf(k, p), "r*")
+
+================2d============
+
+n = input("Nr. of trials = ");
+p = input("p = ");
+N = input("Nr. of simulations = ");
+
+for i = 1:N
+  for j = 1:n
+    X(j) = 0
+    while rand >= p
+      X(j) = X(j)+1
+    end
+  endfor
+    Y(i) = sum(X); % Y ~ Nbin
+endfor
+
+k = 0:150;
+U_Y = unique(Y);
+n_Y = hist(Y, length(U_Y));
+relativ_frequencies = n_Y / N;
+plot(U_Y, relativ_frequencies, "*", k, nbinpdf(k, n, p), "r*")

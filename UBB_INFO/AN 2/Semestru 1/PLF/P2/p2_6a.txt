@@ -1,0 +1,42 @@
+%a. Determine the product of a number represented as digits in a list to a given digit. 
+
+
+%Eg.: [1 9 3 5 9 9] * 2 =>[3 8 7 1 9 8]
+
+carry(A, B, C, D):-
+	AB is A*B,
+    ABC is AB+C,
+    ABC > 9,
+    D is ABC div 10, 
+    !.
+carry(A, B, C, 0):-
+	AB is A*B,
+    ABC is AB+C,
+    ABC =< 9.
+   
+digit(A, B, C, D):-
+    AB is A*B,
+    ABC is AB+C,
+    ABC > 9,
+    D is ABC mod 10.
+
+digit(A, B, C, ABC):-
+    AB is A*B,
+    ABC is AB+C,
+    ABC =< 9.
+
+product([], _, 0, []).
+product([], _, C, [C]).
+product([H|T], NR, C, [RD|R]):-
+    carry(H, NR, C, RC),
+    digit(H, NR, C, RD),
+    product(T, NR, RC, R).
+
+invers(C, [], C).
+invers(C, [H|T], R):-
+    invers([H|C], T, R).
+
+main(L, R):-
+    invers([], L, RR),
+    product(RR, 2, 0, RE),
+    invers([], RE, R).

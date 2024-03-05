@@ -1,0 +1,21 @@
+%Given a list of numbers, remove all the increasing sequences. Ex. remove([1,2,4,6,5,7,8,2,1]) => [2, 1]
+
+
+removeinc([], []).
+removeinc([H], [H]).
+removeinc([H1, H2], []):-
+    H1<H2.
+removeinc([H1, H2, H3|T], R):-
+    H1<H2,
+    H2<H3,
+    removeinc([H2,H3|T], R).
+removeinc([H1, H2, H3|T], R):-
+    H1<H2,
+    H2>=H3,
+    removeinc([H3|T], R).
+removeinc([H1, H2|T], [H1|R]):-
+    H1>=H2,
+    removeinc([H2|T], R).
+
+
+    

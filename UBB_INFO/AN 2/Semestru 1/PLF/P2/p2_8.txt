@@ -1,0 +1,60 @@
+myCarry(A, B, C, 1):-
+    AB is A+B,
+    ABC is AB + C, 
+    ABC > 9.
+
+myCarry(A, B, C, 0):-
+    AB is A+B,
+    ABC is AB + C, 
+    ABC =< 9.
+
+myDigit(A, B, C, D):-
+    AB is A+B,
+    ABC is AB+C,
+    ABC > 9,
+    D is ABC mod 10.
+
+myDigit(A, B, C, D):-
+    AB is A+B,
+    D is AB+C,
+    D =< 9.
+
+invers(C, [], C).
+invers(C, [H|T], R):-
+    invers([H|C], T, R).
+
+
+sum([], [], 0, []).
+sum([], [], 1, [1]).
+sum([], [H|T], C, [D|R]):-
+    myCarry(0, H, C, CD),
+    myDigit(0, H, C, D),
+    sum([], T, CD, R).
+sum([H|T], [], C, [D|R]):-
+    myCarry(H, 0, C, CD),
+    myDigit(H, 0, C, D),
+    sum([], T, CD, R).
+sum([H1|T1], [H2|T2], C, [D|R]):-
+    myCarry(H1, H2, C, CD),
+    myDigit(H1, H2, C, D),
+    sum(T1, T2, CD, R).
+
+main(L, RR):-
+    invers([], L, RE),
+    sum(RE, [1], 0, R),
+    invers([], R, RR).
+
+%B
+
+f([], []).
+f([H|T], [RR|R]):-
+    is_list(H),
+    main(H, RR),
+    f(T, R).
+f([H|T], [H|R]):-
+    f(T, R).
+
+
+
+
+

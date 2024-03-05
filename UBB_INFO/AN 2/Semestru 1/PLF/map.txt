@@ -1,0 +1,2 @@
+ Default methods can be overridden. 
+Whereas,static methods can’t be overridden.

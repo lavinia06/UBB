@@ -1,0 +1,17 @@
+; checkExistence(l, elem)
+; = true, if l = elem
+; = false, if l != elem
+; = checkExistence(l1, elem) or checkExistence(l2,elem) or ... or checkExistence(ln,elem), otherwise (if l is a list of the form:
+; l = l1l2...ln)
+
+(defun checkExistence(l elem)
+(cond
+((and (atom l) (equal l elem)) T)
+((atom l) nil )
+ (t (some #'identity (mapcar #'(lambda (a) (checkExistence a elem)) l)))
+)
+)
+
+(print (checkExistence '(a (b (c)) (d) (E (f))) 'b)
+
+FARA SOME!

@@ -1,0 +1,16 @@
+%A list of numbers and sublists of numbers is given.Substitute each sublist in which the sum of the elements is odd with the first element of that sublist
+%(we assume sublists are not empty).Example: [1,2,[2,4],7,3,[4,6,7],[1],8,10,[3,2]] 
+% => [1,2, [2,4] ,7,3,4,1,8,10,3]
+
+sum([], 0).
+sum([H|T], S):-
+    sum(T, S1),
+    S is S1+H.
+
+f([], []).
+f([[H1|T1]|T], [H1|R]):-
+    sum([H1|T1], S),
+    S mod 2 =:= 1,
+    f(T, R).
+f([H|T], [H|R]):-
+    f(T, R).

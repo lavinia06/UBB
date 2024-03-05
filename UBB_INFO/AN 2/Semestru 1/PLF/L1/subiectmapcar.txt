@@ -1,0 +1,79 @@
+;Write a function to get from a given list the list of all atoms, on any
+;level, but on the same order. Example:
+;(((A B) C) (D E)) ==> (A B C D E)
+
+(defun myappend(l1 l2)
+(cond
+((null l1) l2)
+( t (cons (car l1) (myappend (cdr l1) l2)))
+)
+)
+
+;(print (myappend '(1 2 3 4) '(9 9 9 9)))
+
+(defun getall(l)
+(cond
+((null l) nil)
+((listp (car l)) (myappend (getall (car l)) (getall (cdr l))))
+(t (myappend (list (car l)) (getall (cdr l) )))
+)
+)
+
+(defun getall1(l)
+(cond
+((null l) nil)
+((listp (car l)) (myappend (getall1 (cdr l)) (getall1 (car l))))
+(t (myappend (getall1 (cdr l)) (list (car l))))
+)
+)
+
+(print(getall1 '(((A B) C) (D E))))
+
+;Write a function that, with a list given as parameter, inverts only continuous
+;sequences of atoms. Example:
+;(a b c (d (e f) g h i)) ==> (c b a (d (f e) i h g))
+
+(defun revrse(l c)
+    (cond
+        ((null l) c)
+        ((listp (car l)) (append c (list (revrse (car l) ())) (revrse (cdr l) ())))
+        (t (revrse (cdr l) (cons (car l) c)))
+    )
+)
+;Write a function to replace each sublist of a list with its last element.
+;A sublist is an element from the first level, which is a list.
+;Example: (a (b c) (d (e (f)))) ==> (a c (e (f))) ==> (a c (f)) ==> (a c f)
+;(a (b c) (d ((e) f))) ==> (a c ((e) f)) ==> (a c f)
+
+(defun rplc (l)
+    (cond
+        ((null (cdr l)) (car l))
+        ((listp (car l)) (cons (rplc (car l)) (rplc (cdr l))))
+        (t (cons (car l)  (rplc (cdr l))))
+    )
+)
+
+(print (rplc '(a (b c) (d ((e) f)))))
+
+(defun clona (l n)
+    (cond
+        ((and (numberp l) (equal (mod n 2) 1)) 0)
+        ((and (atom l) (equal (mod n 2) 1)) 1)
+        ((atom l) 0)
+        (t (apply #'+ (mapcar #'(lambda (a)(clona a (+ 1 n))) l)))
+    )
+)
+
+(defun prop (l)
+    (equal (mod (clona l 1) 2) 1)
+)
+
+(defun main_f (l)
+    (cond
+        ((atom l) 0)
+        ((prop l)(print l)(print (prop l)) (+ 1 (apply #'+ (mapcar #'main_f l))))
+        (t (apply #'+(mapcar #'main_f l)))
+    )
+)
+
+(print (main_f '(a (b 2)(1 c 4)(1 (6 f))(((G)4)6) )))

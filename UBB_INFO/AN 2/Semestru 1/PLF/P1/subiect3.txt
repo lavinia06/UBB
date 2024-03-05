@@ -1,0 +1,33 @@
+sum([], 0).
+sum([H|T], S):-
+    sum(T, S1),
+    S is S1 +H.
+
+len([], 0).
+len([_|T], L):-
+    len(T, L1),
+    L is L1+1.
+
+sub([], _, _, []).
+sub([H|T], K, N, [H|R]):-
+    K=<N,
+    K1 is K+1,
+    sub(T, K1, N, R).
+sub([_|T], K, N, R):-
+    sub(T, K, N, R).
+
+f(L, K, R):-
+    len(L, L1),
+    sub(L, K, L1, R),
+    len(R, R1),
+    R1 >0,
+    sum(R, S),
+    S mod 3 =:= 0.
+
+main(L, K, R):-
+    findall(RS, f(L, K, RS), R).
+
+
+
+
+

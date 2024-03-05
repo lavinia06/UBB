@@ -1,0 +1,95 @@
+(defun f(l n)
+    (cond
+        ((and (numberp l) (= (mod n 2) 1)) (list l))
+        ((atom l) nil)
+        (t (list (mapcar #'(lambda (a)(f a (+ 1 n))) l)))
+        
+    )
+)
+
+(defun mymin(a b)
+(cond
+((and (not (numberp a)) (not (numberp b)))nil)
+((not (numberp a)) b)
+((not (numberp b)) a)
+((> a b) b)
+(t a)
+)
+)
+
+(defun minlist(l)
+(cond
+((null l) -1)
+((null (cdr l)) (car l))
+(t(mymin (car l) (minlist (cdr l))))
+)
+)
+
+(defun prop(n)
+    (=(mod (minlist (f n 0)) 2) 0)
+)
+
+(defun main_f (l)
+    (cond
+        ((atom l) 0)
+        ((prop l)(print l) (+ 1 (apply #'+ (mapcar #'main_f l))))
+        (t (apply #'+(mapcar #'main_f l)))
+    )
+)
+
+(defun g (l)
+    (list (car l) (car l))
+)
+
+(setq q 'g)
+(setq p q)
+(print q)
+(print p)
+(print (funcall p '(a b c)))
+(print  (f '( A (B 2) (2 C 4) (1 (3 F)) (((G) 4) 2)) ) ) 
+
+
+
+
+insert(E, L, [E|L]).
+insert(E, [H|T], [H|R]):-
+    insert(E, T, R).
+
+aranjamente([A|_], 1, [A]).
+aranjamente([_|T], K, R):-
+	aranjamente(T, K, R).
+
+    
+aranjamente([H|T], K, R):-
+    K > 1,
+    K1 is K-1,
+    aranjamente(T, K1, R1),
+    insert(H, R1, R).
+
+product([], 1).
+product([H|T], R):-
+    product(T, R1),
+    R is R1*H.
+
+fun([],_, _,[]).
+fun([H|T], K, PP, RR):-
+    aranjamente([H|T], K, RR),
+    product(RR, P),
+    PP=:=P.
+
+f(L, K, P, R):-
+    findall(RS, fun(L, K, P, RS), R).
+
+
+
+(defun replaceodd (l n e)
+(cond
+((and (atom l) (=(mod n 2)1)) e)
+((and (atom l) (=(mod n 2)0)) l)
+(t (mapcar #' (lambda(a)(replaceodd a (+ n 1) e))l))
+)
+)
+
+(print (replaceodd '(a(b(g))(c (d (e))(f))) -1 'h))
+
+    

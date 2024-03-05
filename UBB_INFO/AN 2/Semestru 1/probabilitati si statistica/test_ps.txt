@@ -1,0 +1,38 @@
+ni = [ 3.26, 1.89, 2.42, 2.03, 3.07, 2.95, 1.39, 3.06, 2.46, 3.35, 1.56, 1.79, 1.76, 3.82, 2.42, 2.96];
+
+n = length(ni);
+%a)
+alpha = input("give the significance level ")
+m0 = 3;
+printf("this is a left tailed test with sigma unknown")
+t = tinv(alpha, n-1);
+[H, P, CI, ZVAL] = ttest(ni, m0, "alpha", alpha, "tail", "left");
+RR = [-Inf, t];
+printf('\nThe confidence interval for mu is (%4.4f,%4.4f)\n', CI)
+printf('the rejection region is (%4.4f,%4.4f)\n', RR)
+printf('the value of the test statistic t is %4.4f\n', ZVAL.tstat)
+printf('the P-value of the test is %4.4f\n', P)
+
+if H==1
+    fprintf('The null hypothesis is rejected.\n')
+    fprintf('The data suggests that the average exceeds 3.\n')
+
+else
+    fprintf('The null hypothesis is not rejected.\n')
+    fprintf('The data suggests that the average DOES NOT exceed 3.\n')
+end
+
+%b
+
+c = input("the confidence level ");
+alpha2 = 1-c;
+s = var(ni);
+u1 = chi2inv(1-alpha2/2, n-1);
+u2 = chi2inv(alpha/2, n-1);
+
+r1 = ((n-1)*s)/u1
+r2 = ((n-1)*s)/u2
+
+rr1 = sqrt(r1)
+rr2 = sqrt(r2)
+fprintf("The interval is (%f, %f)\n", rr1, rr2)

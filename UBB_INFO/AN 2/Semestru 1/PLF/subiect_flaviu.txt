@@ -1,0 +1,54 @@
+insert(E, L, [E|L]).
+insert(E, [H|T], [H|R]):-
+    insert(E, T, R).
+
+perm([], []).
+perm([H|T], R):-
+    perm(T, R1),
+    insert(H, R1, R).
+
+
+interval(A, A, [A]).
+interval(A, B, [A|R]):-
+    A<B,
+    A1 is A+1,
+    interval(A1, B, R),!.
+
+f(N, R):-
+    A is N*2 -1,
+    interval(N, A, R).
+
+abs(A, A, 0).
+abs(A, B, C):-
+    A>B,
+    C is A-B.
+abs(A, B, C):-
+    A<B, 
+    C is B-A.
+
+check([H1, H2]):- 
+    abs(H1, H2, R),
+    R =<2, !.
+check([H1, H2|T]):-
+    abs(H1, H2, R),
+    R =< 2,
+    check([H2|T]).
+
+main(N, R):-
+    f(N, RR),
+    perm(RR, R),
+    check(R).
+    
+
+
+(defun f(l k n)
+(cond
+((and (numberp l) (=(mod n 2) 0) (< k n)) (- l 1))
+((and (numberp l) (> k n)) l)
+((atom l) l)
+(t (mapcar #' (lambda (a)(f a k (+ 1 n))) l))
+)
+)
+
+(print (f '(1 s 4 ( f (7))) -1 1))
+

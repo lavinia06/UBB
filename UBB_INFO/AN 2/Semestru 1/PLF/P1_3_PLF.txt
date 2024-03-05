@@ -1,0 +1,136 @@
+	% am dat remove la elementul maxim dintr-o lista
+
+max(A, A, A).
+max(A, B, A):- A>B, !.
+max(A, B, B):- A<B, !.
+
+
+findmax([], []).
+findmax([A], A).
+findmax([H|T], M):-
+    findmax(T, R),
+    max(H, R, M).
+
+
+remove([], _, []).
+remove([H|T], E, R):-
+    H=:=E,
+    remove(T, E, R).
+remove([H|T], E, [H|R]):-
+    H=\=E,
+    remove(T, E, R).
+
+main([H|T], R):-
+    findmax([H|T], M),
+    remove([H|T], M, R).
+
+	%insert a value at a specific position
+
+insert([], _, _, _, []).
+insert([H|T], A, P, I, [H, A|R]):-
+    P=:=I,
+    I1 is I+1,
+    insert(T, A, P, I1, R).
+insert([H|T], A, P, I, [H|R]):-
+    P=\=I,
+    I1 is I+1,
+    insert(T, A, P, I1, R).
+   
+
+	%add 1 after every even number
+main([], []).
+
+main([H|T], [H, 1|R]):-
+    H mod 2=:=0,
+    !,
+    main(T, R).
+main([H|T], [H|R]):-
+    H mod 2=\=0,
+    !,
+    main(T, R).
+
+
+		%diferenta dintre doua seturi
+
+
+nr_oc([], _, 0).
+nr_oc([A], A, 1).
+nr_oc([H|T], A, K):-
+    H=:=A,
+    !,
+    nr_oc(T, A, K1),
+    K is K1+1.
+nr_oc([H|T], A, K):-
+    H=\=A,
+    nr_oc(T, A, K).
+
+dif([], _, []):-!.
+dif([H|T], [H2|T2], [H|R]):-
+    nr_oc([H2|T2], H, 0),
+    dif(T, [H2|T2], R).
+dif([H|T], [H2|T2], R):-
+    nr_oc([H2|T2], H, K),
+    K>0,
+    dif(T, [H2|T2], R).
+
+
+			%numberatom([1, 2, 1, 2, 1, 3, 1], X) => X = [[1, 4], [2, 2], [3, 1]].
+
+nrOc([],_,0).
+nrOc([H|T], E, R):-
+    H=:=E,
+    nrOc(T, E, R1),
+    R is R1+1.
+nrOc([H|T], E, R):-
+    H=\=E,
+    nrOc(T, E, R).
+
+remove([], _, []).
+remove([H|T], E, [H|R]):-
+    H=\=E,
+    remove(T, E, R).
+remove([H|T], E, R):-
+    H=:=E,
+    remove(T, E, R).
+
+main([], []).
+main([H|T], [[H|K]|R]):-
+    nrOc([H|T], H, K),
+    remove(T, H, RE),
+    K =\= 0,
+    main(RE, R).
+
+
+ ==== remove the first 3 occurences
+
+main([], _, _, []).
+main([H|T], E, K,  R):-
+    E=:=H,
+    K>0,
+    K1 is K-1,
+    main(T, E, K1, R),!.
+main([H|T], E, K,  [H|R]):-
+    main(T, E, K, R), !.
+
+
+=======================================
+ has a valley aspect
+
+valley([_], 0):-!.
+valley([H1, H2|T], F):-
+    H1>H2,
+    F=:=1,
+    valley([H2|T], 1).
+valley([H1, H2|T], _):-
+    H1<H2,
+    valley([H2|T], 0).
+
+mainV(L):-
+    L=[H1,H2|_],
+    H1>H2,
+    valley(L, 1).
+
+ 
+
+
+    

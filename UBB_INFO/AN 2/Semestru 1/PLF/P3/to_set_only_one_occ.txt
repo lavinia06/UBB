@@ -1,0 +1,46 @@
+:- initialization(main).
+
+nroc([],_, 0).
+nroc([H|T], E, R):-
+    H=:=E,
+    nroc(T, E, R1),
+    R is R1+1,
+    nroc(T, E, R1).
+nroc([H|T], E, R):-
+    H=\=E,
+    nroc(T, E, R).
+    
+toset([], []).
+toset([H|T], [H|R]):-
+    nroc(T, H, P),
+    P=:=0,
+    toset(T, R).
+toset([H|T], R):-
+    nroc(T, H, P),
+    P=\=0,
+    toset(T, R).    
+ 
+remove([], _, []).
+remove([H|T], E, R):-
+    H=:=E, 
+    remove(T, E, R).
+remove([H|T], E, [H|R]):-
+    H=\=E, 
+    remove(T, E, R).  
+    
+f([],[]).
+f([H|T], [H|R]):-
+    nroc([H|T], H, P),
+    P=:=1,
+    f(T, R).
+f([H|T],  R):-
+    nroc([H|T], H, P),
+    P>1,
+    remove(T, H, R1),
+    f(R1, R).    
+    
+
+
+main :- 
+    f([1, 2, 3, 4, 5, 5, 4, 2], R),
+    write(R).

@@ -1,0 +1,97 @@
+drop table VisitZoos
+drop table Visitor
+drop table Food_Animal
+drop table Food
+drop table Animals
+drop table Zoos
+
+
+create table Zoos(
+	zoo_id int primary key identity(1,1),
+	administrator varchar(30),
+	name varchar(30),
+)
+
+
+create table Animals(
+	animall_id int primary key identity(1,1),
+	animal_name varchar(30),
+	animal_birthDate date,
+	zoo_id int foreign key references Zoos(zoo_id) on delete cascade on update cascade
+)
+
+create table Food(
+	food_id int primary key identity(1,1),
+	food_name varchar(30)
+)
+
+create table Food_Animal(
+	food_id int foreign key references Food(food_id) on delete cascade on update cascade,
+	animal_id int foreign key references Animals(animall_id) on delete cascade on update cascade,
+	quota int
+)
+
+create table Visitor(
+	visitor_id int primary key identity(1,1),
+	visitor_name varchar(30),
+	age int
+)
+
+create table VisitZoos(
+	visit_id int primary key identity(1,1),
+	visitor_id int foreign key references Visitor(visitor_id) on delete cascade on update cascade,
+	zoo_id int foreign key references Zoos(zoo_id) on delete cascade on update cascade,
+	day varchar(30),
+	price int,
+	unique(visitor_id, zoo_id, day, price)
+)
+
+
+insert into Zoos(administrator, name) values ('a1', 'n1'), ('a2', 'n2')
+insert into Animals(animal_name, animal_birthDate, zoo_id) values ('an1', '2002-10-09', 1), ('an2', '2002-11-12', 2)
+insert into Food(food_name) values ('f1'), ('f2')
+insert into Food_Animal(food_id, animal_id, quota) values (1, 1, 12), (2, 1, 11), (1, 2, 22)
+insert into Visitor(visitor_name, age) values ('v1', 23), ('v2', 10)
+insert into VisitZoos(visitor_id, zoo_id, day, price) values (1, 1, 'tue', 2333), (1, 2, 'mon', 400)
+insert into VisitZoos(visitor_id, zoo_id, day, price) values (2, 1, 'mon', 233)
+
+select * from VisitZoos
+
+--b
+go
+create or alter procedure delete_an(@animal_name varchar(30))
+as
+	declare @animal_id int = (select animall_id from Animals where animal_name = @animal_name)
+
+	if not exists (select * from Animals where animall_id = @animal_id)
+		raiserror('invalid animal', 12, 1)
+	else
+		delete from Food_Animal where @animal_id = animal_id
+go
+
+exec delete_an @animal_name = 'an1'
+select * from Food_Animal
+
+---c 
+go
+create or alter view min_an 
+as
+	select zoo_id 
+	from Zoos
+	group by  zoo_id 
+	having count(*) = (select min(col) from (select count(*) as col from VisitZoos group by zoo_id) as C)
+go
+
+select * from min_an
+
+---D
+go
+create or alter function fct(@n int)
+returns Table as return
+ 
+	select * from Visitor where visitor_id in (select visitor_id from VisitZoos group by visitor_id having count(*) > @n)
+
+
+go
+
+select * from fct(2)

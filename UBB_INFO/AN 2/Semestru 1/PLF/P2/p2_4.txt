@@ -1,0 +1,62 @@
+%a. Write a predicate to determine the sum of two numbers written in list representation.
+%b. For a heterogeneous list, formed from integer numbers and list of digits, write a predicate to compute the sum of all numbers represented as sublists.
+%Eg.: [1, [2, 3], 4, 5, [6, 7, 9], 10, 11, [1, 2, 0], 6] => [8, 2, 2].
+
+sum([], [], []):-!.
+sum([H1|T1], [H2|T2], [R1|R]):-
+    R1 is H1+H2,
+    sum(T1, T2, R).
+
+%B
+
+myCarry(A,B,C,1):-
+    AB is A + B,
+    ABC is AB + C,
+    ABC > 9.
+myCarry(A,B,C,0):-
+    AB is A + B,
+    ABC is AB + C,
+    ABC =< 9.
+
+myDigit(A, B, C, D):-
+    AB is A+B,
+    ABC is AB+C,
+    ABC > 9,
+    D is ABC mod 10.
+myDigit(A, B, C, D):-
+    AB is A+B,
+    D is AB+C,
+    D =< 9.
+	
+
+suma([], [], 0, []).
+suma([], [], 1, [1]).
+suma([], [H|T], C, [RD|R]):-
+    myCarry(0, H, C, RC),
+    myDigit(0, H, C, RD),
+    suma([], T, RC, R).
+suma([H|T], [], C, [RD|R]):-
+    myCarry(H, 0, C, RC),
+    myDigit(H, 0, C, RD),
+    suma(T, [], RC, R).
+suma([H1|T1], [H2|T2], C, [RD|R]):-
+    myCarry(H1, H2, C, RC),
+    myDigit(H1, H2, C, RD),
+    suma(T1, T2, RC, R).
+
+invers(C, [], C).
+invers(C, [H|T], R):-
+    invers([H|C], T, R).
+
+
+main(L, P, RE):-
+    invers([],L, L1),
+    invers([], P, P1),
+    suma(L1, P1, 0, R),
+    invers([], R, RE).
+
+        
+        
+        
+        
+        

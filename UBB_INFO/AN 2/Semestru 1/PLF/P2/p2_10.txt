@@ -1,0 +1,34 @@
+%a. For a list of integer numbers, define a predicate to write twice in list every prime number.
+%b. For a heterogeneous list, formed from integer numbers and list of numbers, 
+%define a predicate to write in every sublist twice every prime number.
+%Eg.: [1, [2, 3], 4, 5, [1, 4, 6], 3, [1, 3, 7, 9, 10], 5] =>[1, [2, 2, 3, 3], 4, 5, [1, 4, 6], 3, [1, 3, 3, 7, 7, 9, 10], 5]
+
+%a
+isPrime(P,D):- D>P/2, !.
+isPrime(P, D):-
+    P mod D =\=0, !,
+    D1 is D+1,
+    isPrime(P, D1).
+isPrime(P):-
+    P>1,
+    isPrime(P,2).
+
+fct([], []).
+fct([H|T], [H, H|R]):-
+    isPrime(H),!,
+    fct(T, R).
+fct([H|T], [H|R]):-
+    fct(T, R).
+
+%B
+
+f([], []).
+f([H|T], [RR|R]):-
+    is_list(H),
+    fct(H, RR),
+    f(T, R).
+f([H|T], [H|R]):-
+    f(T, R).
+
+
+    

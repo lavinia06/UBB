@@ -1,0 +1,30 @@
+%a. Define a predicate to add after every element from a list, the divisors of that number.
+%b. For a heterogeneous list, formed from integer numbers and list of numbers, define a predicate to add in every sublist the divisors of every element.
+%Eg.: [1, [2, 5, 7], 4, 5, [1, 4], 3, 2, [6, 2, 1], 4, [7, 2, 8, 1], 2] 
+%=>[1, [2, 5, 7], 4, 5, [1, 4, 2], 3, 2, [6, 2, 3, 2, 1], 4, [7, 2, 8, 2, 4, 1], 2]
+
+divizori(A, B, []):- B > A.
+divizori(A, E, [E|R]):-
+    A mod E =:= 0,!,
+    E1 is E+1,
+    divizori(A, E1, R).
+divizori(A, E, R):-
+    A mod E =\= 0,!,
+    E1 is E+1,
+    divizori(A, E1, R).
+
+div([], []).
+div([H|T], [H, R1|R]):-
+   divizori(H, 2, R1),
+    div(T, R).
+   
+
+%b
+f([], []).
+f([H|T], [RR|R]):-
+    is_list(H),
+    div(H, RR),
+    f(T, R).
+f([H|T], [H|R]):-
+    f(T, R).
+

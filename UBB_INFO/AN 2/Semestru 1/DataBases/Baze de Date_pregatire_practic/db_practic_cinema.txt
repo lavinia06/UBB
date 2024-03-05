@@ -1,0 +1,96 @@
+drop table ActorsInCinema
+drop table Actor
+drop table CinemaProduction
+drop table Movie
+drop table StageDirector
+drop table Company
+
+create table Company(
+	company_id int primary key identity(1,1),
+	company_name varchar(30)
+)
+
+create table StageDirector(
+	stage_director_id int primary key identity(1,1),
+	name varchar(20),
+	nr_awards int
+)
+
+
+create table Movie(
+	movie_id int primary key identity(1,1),
+	name varchar(30),
+	date DATE,
+	company_id int foreign key references Company(company_id) on delete cascade on update cascade,
+	director_id int foreign key references StageDirector(stage_director_id) on delete cascade on update cascade
+)
+
+create table CinemaProduction(
+	cinema_id int primary key identity(1,1),
+	title varchar(20),
+	movie_id int foreign key references Movie(movie_id) on delete cascade on update cascade
+)
+
+create table Actor(
+	actor_id int primary key identity(1,1),
+	actor_name varchar(30),
+	rank int
+)
+
+create table ActorsInCinema(
+	actor_id int foreign key references Actor(actor_id) on delete cascade on update cascade,
+	cinema_id int foreign key references CinemaProduction(cinema_id) on delete cascade on update cascade,
+	entry_time time
+)
+
+insert into Company(company_name) values ('company1'), ('company2')
+insert into StageDirector(name, nr_awards) values ('dir1', 2), ('dir2', 3)
+insert into Movie(name, date, company_id, director_id) values ('name1', '2022-09-09', 1, 1), ('name2', '2021-08-12', 1, 2)
+insert into CinemaProduction(title, movie_id) values ('title1', 1), ('title2', 1), ('title3', 2)
+insert into Actor(actor_name, rank) values ('actor1', 11), ('actor2', 3)
+insert into ActorsInCinema(actor_id, cinema_id, entry_time) values (1, 1, '11:09'), (1, 2, '22:00'), (2, 2, '09:45')
+insert into ActorsInCinema(actor_id, cinema_id, entry_time) values (1, 3, '11:00')
+
+select * from Company
+select * from StageDirector
+select * from Movie
+select * from CinemaProduction
+select * from Actor
+select * from ActorsInCinema
+
+-----B
+go
+create or alter procedure usp_add(@actor_id int, @entry_time time, @cinema_id int)
+as
+begin
+
+	if @actor_id is not null and @cinema_id is not null
+		insert into ActorsInCinema(actor_id, cinema_id, entry_time) values (@actor_id, @cinema_id, @entry_time)
+	else
+		raiserror('cannot insert null arguments', 12, 2)
+end
+go
+
+exec usp_add @actor_id = 1, @entry_time = '12:12', @cinema_id = 2
+
+-----c
+go
+create view view_actors 
+as
+	select actor_name
+	from Actor
+	where actor_id in(select actor_id from ActorsInCinema group by actor_id having count(*) >= (Select count(*) from CinemaProduction))
+go
+
+drop view view_actors
+select * from view_actors
+
+----d
+go
+create function Productions(@p int)
+returns Table as return
+select name from Movie where date > '2018-01-01' and movie_id in (select movie_id from CinemaProduction group by movie_id having count(*) > @p)
+go
+
+select * from Productions(0)
+select * from Movie

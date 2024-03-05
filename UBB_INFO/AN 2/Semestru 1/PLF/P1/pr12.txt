@@ -1,0 +1,23 @@
+%a. Write a predicate to substitute in a list a value with all the elements of another list.
+%b. Remove the n-th element of a list.
+
+remove([], _, _, []).
+remove([_|T], N, I, T):-
+    I=:=N,!.
+remove([H|T], N, I, [H|R]):-
+    I=\=N,
+    I1 is I+1,
+    remove(T, N, I1, R).
+
+%a
+insert([], L, L).
+insert([H|T], L, [H|R]):-
+    insert(T, L, R).
+
+f([], _, [], []).
+f([H|T], E, L, R):-
+    H=:=E,
+    insert(L, T, R).
+f([H|T], E, L, [H|R]):-
+    H=\=E,
+    f(T, E, L, R).

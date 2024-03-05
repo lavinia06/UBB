@@ -1,0 +1,21 @@
+
+:- initialization(main).
+
+insert(E, L, [E|L]).
+insert(E, [H|T], [H|R]):-
+    insert(E, T, R).
+    
+    
+
+perm([], []).
+perm([H|T], P1):-
+    perm(T, P),
+    insert(H, P1, P).
+    
+f(L, R):-
+    findall(RS, aranjamente(L, 2, RS), R).
+    
+main:-
+    f([1, 2, 3, 4], R),
+    write(R).
+    

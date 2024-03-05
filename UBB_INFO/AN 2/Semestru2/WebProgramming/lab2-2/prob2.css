@@ -1,0 +1,86 @@
+
+.rainbow-wrapper {
+    position: relative;
+    width: 90vw;
+    height: 45vw;
+    overflow: hidden;
+    margin: auto;
+    transform: rotate(-45deg);
+}
+
+.rainbow-wrapper>div {
+    border-radius: 90vw 90vw 0 0;
+    background: linear-gradient(to right, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8B00FF);
+}
+
+.red {
+    background: linear-gradient(to right, #f94156, #F94156FF);
+    width: 90vw;
+    height: 45vw;
+    position: absolute;
+}
+
+.orange {
+    background-color: #F3722C;
+    width: 85vw;
+    height: 42.5vw;
+    position: absolute;
+    left: 2.5vw;
+    top: 4.5vw;
+}
+
+.yellow {
+    background-color: #F9C74F;
+    width: 80vw;
+    height: 40vw;
+    position: absolute;
+    left: 5vw;
+    top: 7.5vw;
+}
+
+.green {
+    background-color: #90BE6D;
+    width: 75vw;
+    height: 42.5vw;
+    position: absolute;
+    left: 7.5vw;
+    top: 9.5vw;
+}
+
+.blue {
+    background-color: #57BED6;
+    width: 70vw;
+    height: 35vw;
+    position: absolute;
+    left: 10vw;
+    top: 12vw;
+}
+
+.purple {
+    background-color: #9C71D4;
+    width: 65vw;
+    height: 32.5vw;
+    position: absolute;
+    left: 12.5vw;
+    top: 14.5vw;
+}
+
+.white {
+    background-color: #ffffff;
+    width: 60vw;
+    height: 30vw;
+    position: absolute;
+    left: 14vw;
+    top: 17vw;
+}
+
+.box{
+    width: 78vw;
+    height: 90vw;
+    background-color: white;
+    position: absolute;
+    top: 9%;
+    border-radius: 90vw 90vw 0 0;
+    transform: rotate(-50deg);
+    left:45vw;
+}

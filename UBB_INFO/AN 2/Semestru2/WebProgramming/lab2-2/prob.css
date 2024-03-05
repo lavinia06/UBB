@@ -1,0 +1,25 @@
+/* Set the background color of the body to black */
+body {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+/* Create a container for the rainbow */
+.rainbow {
+    position: absolute;
+    top: 50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    transform: rotate(-45deg);
+
+    background-image: linear-gradient(to right,
+    red 0%,
+    orange 16.7%,
+    yellow 33.3%,
+    green 50%,
+    blue 66.7%,
+    purple 83.3%,
+    violet 100%);
+}

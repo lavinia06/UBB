@@ -1,0 +1,38 @@
+%Write a predicate to compute the intersection of two sets.
+%b. Write a predicate to create a list (m, ..., n) of all integer numbers fromthe interval[m, n].
+
+:- initialization(main).
+
+nrOcc([], _, 0).
+nrOcc([H|T], E, P1):-
+      H =:= E,
+      nrOcc(T, E, P),
+      P1 is P+1.
+nrOcc([H|T], E, P):-
+      H =\= E,
+      nrOcc(T, E, P).
+
+intersection([], [], []).
+intersection([], _, []).
+intersection(_, [], []).
+intersection(L, [H|T], [H|R]):-
+    nrOcc(L, H, P),
+    P>0,
+    intersection(L, T, R), !.
+intersection([H|T], L, [H|R]):-
+    nrOcc(L, H, P),
+    P>0,
+    intersection(T, L, R),!.
+
+    
+main:-
+    intersection([1, 2], [1, 2, 3], R),
+    write(R).
+    
+----B
+
+interval(A, A, [A]).
+interval(A, B, [A|R]):-
+    A<B,
+    A1 is A+1,
+    interval(A1, B, R),!.

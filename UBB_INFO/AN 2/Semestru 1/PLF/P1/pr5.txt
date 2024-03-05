@@ -1,0 +1,39 @@
+#a. Write a predicate to compute the union of two sets.b. Write a predicate to determine the set of all the pairs of elements in a list. Eg.: L = [a b c d] =>[[a b] [a c] [a d] [b c] [b d] [c d]].
+
+
+:- initialization(main).
+
+union([], [], []).
+union(L, [], L).
+union([H1|T1], [H|T], [H,H1|R]):-
+    union(T1, T, R).
+    
+removeOcc([], _, []).
+removeOcc([H1|T1], E, R):-
+    H1=:=E,
+    removeOcc(T1, E, R).
+removeOcc([H1|T1], E, [H1|R]):-
+    H1=\=E,
+    removeOcc(T1, E, R).
+
+toset([],[]).
+toset([H|T], [H|R]):-
+    removeOcc(T, H, RR),
+    toset(RR, R).
+    
+
+main:-
+    union([1, 2, 3, 4], [3, 4, 5], RR),
+    toset(RR, R),
+    write(R).
+    
+----B
+sets([], 0, []).
+sets([_|T], K, R):-
+    sets(T, K, R).
+sets([H|T], K, [H|R]):-
+    K1 is K-1,
+    sets(T, K1, R).
+
+funct([], []).
+funct(L, RE):- findall(R, sets(L, 2, R), RE).

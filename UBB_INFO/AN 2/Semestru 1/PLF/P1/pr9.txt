@@ -1,0 +1,30 @@
+%a. Insert an element on the position n in a list.
+%b. Define a predicate to determine the greatest common divisor of allnumbers froma list.
+
+insertAtN([], _, _, _, []).
+insertAtN([H|T], E, N, I, [E, H|T]):-
+    N =:= I,!.
+insertAtN([H|T], E, N, I, [H|R]):-
+    N =\= I,
+    I1 is I+1,
+    insertAtN(T, E, N, I1, R).
+    
+
+%b
+
+cmmdc(A, 0, A).
+cmmdc(0, A, A).
+cmmdc(A, A, A).
+cmmdc(A, B, R):-
+    A > B,
+    A1 is A - B,
+    cmmdc(A1, B, R).
+cmmdc(A, B, R):-
+    A < B,
+    B1 is B - A,
+    cmmdc(A, B1, R).
+
+cmlist([_], _).
+cmlist([H|T], R):-
+    cmlist(T, RR),
+    cmmdc(RR, H, R).
